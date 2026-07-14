@@ -127,7 +127,7 @@ export default function StudentListClient({
     if (!error) {
       // Instantly update the local UI without refreshing
       setStudents(prev => prev.map(s => 
-        idsArray.includes(s.id) ? { ...s, status: newBulkStatus } : s
+        idsArray.includes(s.id) ? { ...s, status: newBulkStatus as StudentRow["status"] } : s
       ));
       setSelectedIds(new Set()); // Clear selections
       setShowBulkModal(false);
