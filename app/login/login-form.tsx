@@ -10,7 +10,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
     <button
       type="submit"
       disabled={pending || disabled}
-      className="w-full rounded-lg bg-[#17475A] py-3 font-medium text-white transition hover:bg-[#26718f] cursor disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+      className="w-full rounded-lg bg-yellow-400 py-3 font-semibold text-[#1a1a1a] shadow-md transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
       {pending ? "Logging in..." : "Login"}
     </button>
@@ -18,26 +18,16 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
 }
 
 function useCountdown(lockedUntil?: string) {
-  const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    if (!lockedUntil) {
-      setSecondsLeft(null);
-      return;
-    }
-    const target = new Date(lockedUntil).getTime();
-
-    const tick = () => {
-      const diff = Math.max(0, Math.round((target - Date.now()) / 1000));
-      setSecondsLeft(diff);
-    };
-
-    tick();
-    const interval = setInterval(tick, 1000);
+    if (!lockedUntil) return;
+    const interval = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(interval);
   }, [lockedUntil]);
 
-  return secondsLeft;
+  if (!lockedUntil) return null;
+  return Math.max(0, Math.round((new Date(lockedUntil).getTime() - now) / 1000));
 }
 
 export default function LoginForm() {
@@ -53,12 +43,9 @@ export default function LoginForm() {
   const seconds = secondsLeft ? secondsLeft % 60 : 0;
 
   return (
-    <form action={formAction} className="w-full max-w-sm space-y-5">
+    <form action={formAction} className="max-w-sm space-y-5 ml-15">
       <div>
-        <label
-          htmlFor="email"
-          className="mb-1 block text-sm text-gray-700"
-        >
+        <label htmlFor="email" className="mb-1 block text-sm text-gray-200">
           Email:
         </label>
         <input
@@ -67,15 +54,12 @@ export default function LoginForm() {
           type="email"
           required
           autoComplete="email"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none focus:border-gray-400 focus:ring-1 focus:ring-black-400 text-gray-700"
+          className="w-full rounded-lg border border-white/20 bg-[#1a2133] px-3 py-2.5 text-white outline-none placeholder:text-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
         />
       </div>
 
       <div>
-        <label
-          htmlFor="password"
-          className="mb-1 block text-sm text-gray-700"
-        >
+        <label htmlFor="password" className="mb-1 block text-sm text-gray-200">
           Password:
         </label>
         <div className="relative">
@@ -85,13 +69,13 @@ export default function LoginForm() {
             type={showPassword ? "text" : "password"}
             required
             autoComplete="current-password"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 outline-none focus:border-gray-400 focus:ring-1 focus:ring-black-400 text-gray-700"
+            className="w-full rounded-lg border border-white/20 bg-[#1a2133] px-3 py-2.5 pr-10 text-white outline-none placeholder:text-gray-500 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
           >
             {showPassword ? (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -108,7 +92,7 @@ export default function LoginForm() {
       </div>
 
       {state?.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-red-400">
           ⚠ {state.error}
           {isLocked && (
             <>
@@ -121,7 +105,7 @@ export default function LoginForm() {
 
       <SubmitButton disabled={isLocked} />
 
-      
+    
     </form>
   );
 }

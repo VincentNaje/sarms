@@ -1,5 +1,6 @@
 "use client";
 
+import AvatarUpload from "@/components/avatar-upload";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -26,10 +27,10 @@ export default function Sidebar({ userEmail }: { userEmail?: string }) {
   return (
     <aside className="flex h-screen w-56 flex-col bg-[#1b4d5c] text-white">
       <div className="flex flex-col items-center gap-2 px-4 pt-8 pb-6">
-        <div className="h-16 w-16 rounded-full bg-gray-200" />
+        <AvatarUpload />
         {userEmail && (
           <span className="max-w-full truncate text-xs text-white/70">
-            {userEmail}
+            SLTCF Pio Duran
           </span>
         )}
       </div>

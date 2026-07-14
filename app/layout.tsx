@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "SARMS - Student Academic Records Management System",
-  description: "BS Tourism Management - BUCEng Dean's Office",
+  description: "BS Tourism Management - Southern Luzon Technological College Foundation",
 };
 
 export default function RootLayout({
