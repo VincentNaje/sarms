@@ -29,7 +29,7 @@ export default function Sidebar({ userEmail }: { userEmail?: string }) {
       <div className="flex flex-col items-center gap-2 px-4 pt-8 pb-6">
         <AvatarUpload />
         {userEmail && (
-          <span className="max-w-full truncate text-[1px] text-white/70 whitespace-pre-line text-center">
+          <span className="max-w-full truncate text-lg text-white/70 whitespace-pre-line text-center">
             College of Tourism Management 
           </span>
           
